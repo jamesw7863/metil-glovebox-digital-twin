@@ -16,9 +16,12 @@ public class HUDController : MonoBehaviour
     public float warningPressureLow = 97f;
     public float warningPressureHigh = 108f;
 
+    [Header("Colors")]
+    public Color okColor = Color.white;
+    public Color warningColor = Color.yellow;
+
     private void Reset()
     {
-        // Auto-find GloveboxSystem if possible
         system = FindFirstObjectByType<GloveboxSystem>();
     }
 
@@ -34,16 +37,11 @@ public class HUDController : MonoBehaviour
         if (inflowText != null) inflowText.text = $"Inflow: {inflow:F2}";
         if (outflowText != null) outflowText.text = $"Outflow: {outflow:F2}";
 
-        string status = ComputeStatus(p);
-        if (statusText != null) statusText.text = $"Status: {status}";
-    }
-
-    private string ComputeStatus(float pressureKPa)
-    {
-        // Simple logic for now; later we’ll move this into Core.
-        if (pressureKPa <= warningPressureLow || pressureKPa >= warningPressureHigh)
-            return "WARNING";
-
-        return "OK";
+        bool warning = (p <= warningPressureLow || p >= warningPressureHigh);
+        if (statusText != null)
+        {
+            statusText.text = $"Status: {(warning ? "WARNING" : "OK")}";
+            statusText.color = warning ? warningColor : okColor;
+        }
     }
 }

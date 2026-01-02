@@ -17,6 +17,13 @@ public class GloveboxSystem : MonoBehaviour
     public float Inflow => airflowModel.GetInflow();
     public float Outflow => airflowModel.GetOutflow();
 
+
+    public void AddPressure(float deltaKPa)
+    {
+        pressureKPa = Mathf.Clamp(pressureKPa + deltaKPa, minPressure, maxPressure);
+    }
+
+
     private void Update()
     {
         airflowModel.TickInput(Time.deltaTime);
