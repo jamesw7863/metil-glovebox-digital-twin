@@ -22,7 +22,14 @@ public class GloveboxSystem : MonoBehaviour
     {
         pressureKPa = Mathf.Clamp(pressureKPa + deltaKPa, minPressure, maxPressure);
     }
+    public void ResetToNominal()
+    {
+        pressureKPa = 101.3f;
 
+        // Put flows back to default “nominal”
+        airflowModel.SetInflow(1f);
+        airflowModel.SetOutflow(1f);
+    }
 
     private void Update()
     {

@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class HUDController : MonoBehaviour
 {
+    [Header("Status Override")]
+    public bool statusOverrideEnabled = false;
+    public string statusOverrideText = "PASSED";
+    public Color statusOverrideColor = Color.green;
+
     [Header("References")]
     public GloveboxSystem system;
 
@@ -33,10 +38,24 @@ public class HUDController : MonoBehaviour
         float inflow = system.Inflow;
         float outflow = system.Outflow;
 
-        if (pressureText != null) pressureText.text = $"Pressure: {p:F1} kPa";
-        if (inflowText != null) inflowText.text = $"Inflow: {inflow:F2}";
-        if (outflowText != null) outflowText.text = $"Outflow: {outflow:F2}";
+        if (pressureText != null)
+            pressureText.text = $"Pressure: {p:F1} kPa";
 
+        if (inflowText != null)
+            inflowText.text = $"Inflow: {inflow:F2}";
+
+        if (outflowText != null)
+            outflowText.text = $"Outflow: {outflow:F2}";
+
+        // ✅ STATUS OVERRIDE (PASSED sticks)
+        if (statusOverrideEnabled && statusText != null)
+        {
+            statusText.text = $"Status: {statusOverrideText}";
+            statusText.color = statusOverrideColor;
+            return;
+        }
+
+        // Normal status behavior
         bool warning = (p <= warningPressureLow || p >= warningPressureHigh);
         if (statusText != null)
         {
